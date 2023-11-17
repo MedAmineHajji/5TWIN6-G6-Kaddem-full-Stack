@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 
 
-
 export interface Student {
   idEtudiant: number;
   prenomE: string;

@@ -1,0 +1,45 @@
+version: '2'
+services:
+  spring-app:
+    build: ./5TWIN6-G6-Kaddem
+    ports:
+      - "8089:8089"
+    networks:
+      - backend
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/khaddemApp?useUnicode=true&createDatabaseIfNotExist=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: toor
+
+  angular-app:
+    build: ./frontapp
+    ports:
+      - "4200:4200"
+    networks:
+      - backend
+    depends_on:
+      - spring-app
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'toor'
+    ports:
+      - '33061:3306'
+    expose:
+      - '33061'
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+      - backend
+  
+
+volumes:
+  my-db:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
